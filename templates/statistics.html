@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Statistics for {{ task.title }}{% endblock %}
+{% block script %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load("visualization", "1", {packages:["geochart"]});
+    google.setOnLoadCallback(drawRegionsMap);
+
+    function drawRegionsMap() {
+
+        var data = google.visualization.arrayToDataTable([
+            ['Country', 'Count'],
+            {% for i in country %}
+
+            ['{{ i['_id'] }}', {{ i['count'] }}]
+
+            {% endfor %}
+        ]);
+
+        var options = {};
+
+        var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+        chart.draw(data, options);
+    }
+</script>
+{% endblock %}
+{%- block content -%}
+    <div class="row">
+        <div class="col-md-2 col-lg-2"></div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+            <h2 class="small-size">{{ task.title }}</h2>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="text-center">Statistics</h4>
+                </div>
+                <div id="regions_div" style="width: 100%; height: auto;"></div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tr>
+                                <td>Long URL:</td>
+                                <td>{{ task.long_url }}</td>
+                            </tr>
+                            <tr>
+                                <td>Short URL:</td>
+                                <td>{{ task.short_url }}</td>
+                            </tr>
+                            <tr>
+                                <td>Total clicks:</td>
+                                <td>{{ task.clicks }}</td>
+                            </tr>
+                            <tr>
+                                <td>Created:</td>
+                                <td>{{ task.date_create }}</td>
+                            </tr>
+                            <tr>
+                                <td>Views:</td>
+                                <td>{{ task.views }}</td>
+                            </tr>
+                            <tr>
+                                <td>Number of references to the domain:</td>
+                                <td>{{ mongo.db.short_url.count({'domain': task.domain}) }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="text-center">QR code for this page</h4>
+                </div>
+                <div class="panel-body text-center phone">
+                    <img src="{{ qrcode(stat, box_size=5, border=1) }}" alt="{{ task.title }}" title="Statistics for {{ task.title }}">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-lg-2">
+        </div>
+    </div>
+{% endblock %}

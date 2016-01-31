@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular.min.js"></script>
+{% endblock %}
+{%- block content -%}
+<div class="row">
+    <div class="col-md-2 col-lg-2"></div>
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        {% for i in url %}
+            <span>
+                <a href="{{ i['short_url'] }}" target="_blank">Open in a new tab</a>
+            </span>
+            <span class="pull-right">
+                <a href="{{ i['_id'] }}" target="_blank">Statistics</a>
+            </span>
+            <div class="one">
+                <span class="label label-default">The following URL:</span>
+                <input type="text" class="form-control" value="{{ i['long_url'] }}"/>
+                <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                <span class="small">Original length:
+                    <span class="label label-warning">{{ i['long_url'] | length }} characters</span>
+                </span>
+            </div>
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 class="text-center">QR code for your URL</h4>
+                </div>
+                <div class="panel-body text-center phone">
+                    <img src="{{ qrcode(i['short_url'], box_size=5, border=1) }}" alt="">
+                </div>
+            </div>
+            <div class="two">
+                <span class="label label-default">Your shortened URL is:</span>
+                <input type="text" class="form-control" ng-model="textToCopy='{{ i['short_url'] }}'" />
+                <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                <span class="small">Shortened length:
+                    <span class="label label-success">{{ i['short_url'] | length }} characters</span>
+                </span>
+                <div class='button-copy center-block' clipboard text="textToCopy" on-copied="success()" on-error="fail(err)"></div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="col-md-2 col-lg-2">
+    </div>
+</div>
+{% endblock %}
