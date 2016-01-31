@@ -1,0 +1,52 @@
+retrieve - извлекать
+insert - вставить
+raise - порождать, поднимать
+except - кроме, за исключением
+basically - в основном
+such as - такой как, например
+purge - чистка
+instead of - вместо
+awesome - здорово, классно
+assign - назначать
+execute - выполнять
+resolve - решать
+purchase - покупка
+just - просто, только
+match - совпадение
+stuff - материал
+frequency - частота
+loop - цикл
+skill - умение, навык
+solve - решить
+reply - ответить
+replication - репликация
+quit - сбросить
+Unit - модуль, блок
+execute - выполнить, осуществить, исполнить
+complete - полный, совершенный, законченный
+branch - филиал, отделение, ветка, ответвление
+bookmark - закладка
+sibling - родной брат, родная сестра
+выражение - expression
+restrict - ограничить
+roll over - перевернуться
+recent - недавнее
+useful - полезно
+output - выход
+inside - внутри
+Unit Testing - Модульное тестирование
+Basic Behaviors - Основные поведения
+Extends - Расширяет
+включать - include
+ввод - input
+Inject - Введите
+Sharing Data - Совместное использование данных
+Sharing - Обмен
+skill - умение
+binding - связывания
+root - корень
+include - включают
+apply - применить
+request - запрос
+require - требуют
+research - исследования
