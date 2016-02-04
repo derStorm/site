@@ -1,7 +1,8 @@
 # coding=utf-8
 import os
 import requests
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
+from grab import Grab
 from flask import Flask, render_template, redirect, request, url_for
 from flask_wtf import Form
 from wtforms import StringField
@@ -35,6 +36,7 @@ class MyForm(Form):
 @app.route('/', methods=('GET', 'POST'))
 def home():
     form = MyForm()
+    g = Grab()
     date_create = datetime.datetime.utcnow().strftime('%d, %b %Y %H:%M')
     date_for_sitemap = datetime.datetime.now().strftime('%Y-%m-%d')
     uid_number = mongo.db.short_url.find().count()
@@ -46,9 +48,13 @@ def home():
     domain = '{}://{}'.format(domain_parse.scheme, domain_parse.netloc)
     ip = request.headers.get('X-Real-IP')
     if form.validate_on_submit():
-        title_req = requests.get(long_url)
-        soup = BeautifulSoup(title_req.content)
-        soup_title = soup.find('title').text
+        # title_req = requests.get(long_url)
+        title_req = g.go(long_url)
+        soup_description = title_req.select(
+            '//meta[@name="description"]/@content').text()
+        soup_keywords = title_req.select(
+            '//meta[@name="keywords"]/@content').text()
+        soup_title = title_req.select("//title").text()
         mongo.db.short_url.insert_one(
             {
                 'domain': domain,
@@ -60,7 +66,9 @@ def home():
                 'uid': uid,
                 'views': int(0),
                 'title': soup_title,
-                'ip': ip
+                'ip': ip,
+                'description': soup_description,
+                'keywords': soup_keywords
             }
         )
         return redirect(url_for('.success'))

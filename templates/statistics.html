@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% block meta_content %}{{ task.description }}{% endblock %}
+{% block meta_keywords %}{{ task.keywords }}{% endblock %}
 {% block title %}Statistics for {{ task.title }}{% endblock %}
 {% block script %}
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
