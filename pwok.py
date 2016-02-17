@@ -49,28 +49,47 @@ def home():
     ip = request.headers.get('X-Real-IP')
     if form.validate_on_submit():
         # title_req = requests.get(long_url)
-        title_req = g.go(long_url)
-        soup_description = title_req.select(
-            '//meta[@name="description"]/@content').text()
-        soup_keywords = title_req.select(
-            '//meta[@name="keywords"]/@content').text()
-        soup_title = title_req.select("//title").text()
-        mongo.db.short_url.insert_one(
-            {
-                'domain': domain,
-                'long_url': long_url,
-                'short_url': '{}{}'.format('http://pwok.pw/', short),
-                'date_create': date_create,
-                'date_for_sitemap': date_for_sitemap,
-                'clicks': int(0),
-                'uid': uid,
-                'views': int(0),
-                'title': soup_title,
-                'ip': ip,
-                'description': soup_description,
-                'keywords': soup_keywords
-            }
-        )
+        try:
+            title_req = g.go(long_url)
+            soup_title = title_req.select("//title").text()
+            soup_description = title_req.select(
+                '//meta[@name="description"]/@content').text()
+            # soup_keywords = title_req.select(
+            #     '//meta[@name="keywords"]/@content').text()
+        except IndexError:
+            mongo.db.short_url.insert_one(
+                {
+                    'domain': domain,
+                    'long_url': long_url,
+                    'short_url': '{}{}'.format('http://pwok.pw/', short),
+                    'date_create': date_create,
+                    'date_for_sitemap': date_for_sitemap,
+                    'clicks': int(0),
+                    'uid': uid,
+                    'views': int(0),
+                    'title': soup_title,
+                    'ip': ip
+                    # 'description': soup_description,
+                    # 'keywords': soup_keywords
+                }
+            )
+        else:
+            mongo.db.short_url.insert_one(
+                {
+                    'domain': domain,
+                    'long_url': long_url,
+                    'short_url': '{}{}'.format('http://pwok.pw/', short),
+                    'date_create': date_create,
+                    'date_for_sitemap': date_for_sitemap,
+                    'clicks': int(0),
+                    'uid': uid,
+                    'views': int(0),
+                    'title': soup_title,
+                    'ip': ip,
+                    'description': soup_description
+                    # 'keywords': soup_keywords
+                }
+            )
         return redirect(url_for('.success'))
     return render_template('index.html', form=form, ip=ip)
 

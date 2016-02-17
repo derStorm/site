@@ -6,17 +6,15 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
-    google.load("visualization", "1", {packages:["geochart"]});
-    google.setOnLoadCallback(drawRegionsMap);
+    google.charts.load('current', {'packages':['geochart']});
+    google.charts.setOnLoadCallback(drawRegionsMap);
 
     function drawRegionsMap() {
 
         var data = google.visualization.arrayToDataTable([
             ['Country', 'Count'],
             {% for i in country %}
-
-            ['{{ i['_id'] }}', {{ i['count'] }}]
-
+                ['{{ i['_id'] }}', {{ i['count'] }}],
             {% endfor %}
         ]);
 
