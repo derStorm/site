@@ -1,6 +1,6 @@
 # coding=utf-8
 import os
-import requests
+# import requests
 # from bs4 import BeautifulSoup
 from grab import Grab
 from flask import Flask, render_template, redirect, request, url_for
@@ -109,69 +109,69 @@ def redirect_to_url(page):
     user_agent = request.user_agent
     browser = user_agent.browser
     platform = user_agent.platform
-    ip = request.headers.get('X-Real-IP')
-    geo = requests.get('http://freegeoip.net/json/' + ip)
-    if geo.status_code == 200:
-        data_geo = geo.json()
-        country = data_geo['country_name']
-        city = data_geo['city']
-        for i in mongo.db.short_url.find():
-            if rd == i['short_url']:
-                mongo.db.short_url.update_one(
-                    {
-                        'short_url': rd,
-                        '$isolated': 1
-                    },
-                    {
-                        '$inc': {'clicks': 1}
-                    }
-                )
-                mongo.db.short_url.update_one(
-                    {
-                        'short_url': rd,
-                        '$isolated': 1
-                    },
-                    {
-                        '$push':
-                            {
-                                'referrer': referrer,
-                                'browser': browser,
-                                'platform': platform,
-                                'country': country,
-                                'city': city
-                            }
-                    }
-                )
-                return redirect(i['long_url'])
-    else:
-        for i in mongo.db.short_url.find():
-            if rd == i['short_url']:
-                mongo.db.short_url.update_one(
-                    {
-                        'short_url': rd,
-                        '$isolated': 1
-                    },
-                    {
-                        '$inc': {'clicks': 1}
-                    }
-                )
-                mongo.db.short_url.update_one(
-                    {
-                        'short_url': rd,
-                        '$isolated': 1
-                    },
-                    {
-                        '$push':
-                            {
-                                'referrer': referrer,
-                                'browser': browser,
-                                'platform': platform,
-                                # 'country': country,
-                                # 'city': city
-                            }
-                    }
-                )
-                return redirect(i['long_url'])
+    # ip = request.headers.get('X-Real-IP')
+    # geo = requests.get('http://freegeoip.net/json/' + ip)
+    # if geo.status_code == 200:
+    #     data_geo = geo.json()
+    #     country = data_geo['country_name']
+    #     city = data_geo['city']
+    #     for i in mongo.db.short_url.find():
+    #         if rd == i['short_url']:
+    #             mongo.db.short_url.update_one(
+    #                 {
+    #                     'short_url': rd,
+    #                     '$isolated': 1
+    #                 },
+    #                 {
+    #                     '$inc': {'clicks': 1}
+    #                 }
+    #             )
+    #             mongo.db.short_url.update_one(
+    #                 {
+    #                     'short_url': rd,
+    #                     '$isolated': 1
+    #                 },
+    #                 {
+    #                     '$push':
+    #                         {
+    #                             'referrer': referrer,
+    #                             'browser': browser,
+    #                             'platform': platform,
+    #                             'country': country,
+    #                             'city': city
+    #                         }
+    #                 }
+    #             )
+    #             return redirect(i['long_url'])
+    # else:
+    for i in mongo.db.short_url.find():
+        if rd == i['short_url']:
+            mongo.db.short_url.update_one(
+                {
+                    'short_url': rd,
+                    '$isolated': 1
+                },
+                {
+                    '$inc': {'clicks': 1}
+                }
+            )
+            mongo.db.short_url.update_one(
+                {
+                    'short_url': rd,
+                    '$isolated': 1
+                },
+                {
+                    '$push':
+                        {
+                            'referrer': referrer,
+                            'browser': browser,
+                            'platform': platform,
+                            # 'country': country,
+                            # 'city': city
+                        }
+                }
+            )
+            return redirect(i['long_url'])
 
 
 @app.route('/success/<ObjectId:id>')
